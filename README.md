@@ -17,6 +17,7 @@ O aplicativo foi desenvolvido usando Oracle APEX na versão 23.1.4 e tem como ob
   - *Descrição:* Aplicativo para alterar a senha do usuário. É acessado pelo e-mail enviado no aplicativo principal.
   - *Páginas:* Página Global, Alterar senha, Página de Log-in
 
+<hr>
 
 ### Páginas APEX
 
@@ -31,9 +32,26 @@ O aplicativo foi desenvolvido usando Oracle APEX na versão 23.1.4 e tem como ob
 - *Código implementado:*
 
 ```javascript
+/*
+  Esse código é responsável por substituir
+  o caractere "." (ponto final) do campo USERNAME.
+*/
 apex.jQuery(apex.gPageContext$).on("apexpagesubmit", function() {
   const item = apex.item("P9999_USERNAME");
   item.setValue(item.getValue().replace('.', ''));
 });
-```
-- Esse código é responsável por substituir o caractere "." (ponto final) do campo USERNAME.   
+```   
+
+<hr>
+
+#### Início (1)
+
+- *Descrição:* Página inicial, aonde estão os cards que levam as outras páginas e também possui o nome do usuário atual logado.
+- *Cards:* Usuários, Alterar Senha, Roles Atribuídas, Roles e Privilegiados. 
+  - Cada card redireciona o usuário a página correspondente.
+
+<hr>
+
+####  Usuários (2)
+
+:shipit:
