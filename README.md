@@ -24,11 +24,12 @@ O aplicativo foi desenvolvido usando Oracle APEX na versão 23.1.4 e tem como ob
 #### Página de Log-in (9999)
 
 - *Descrição:* Página para autenticação de usuários.
+  
 - *Campos:* P9999_USERNAME, P9999_PASSWORD
   - *USERNAME:* Nome de usuário do banco de dados.
   - *PASSWORD:* A senha estabelecida pelo usuário ou enviada por e-mail na criação do mesmo.
 - *Botões:* LOGIN
-  - *LOGIN:* Ao ser clicado, efetua os processos padrão de login do Oracle APEX.
+  - *LOGIN:* Efetua os processos padrão de login do Oracle APEX.
 - *Código implementado:*
 
 ```javascript
@@ -47,6 +48,7 @@ apex.jQuery(apex.gPageContext$).on("apexpagesubmit", function() {
 #### Início (1)
 
 - *Descrição:* Página inicial, aonde estão os cards que levam as outras páginas e também possui o nome do usuário atual logado.
+  
 - *Cards:* Usuários, Alterar Senha, Roles Atribuídas, Roles e Privilegiados. 
   - Cada card redireciona o usuário a página correspondente.
 
@@ -54,4 +56,32 @@ apex.jQuery(apex.gPageContext$).on("apexpagesubmit", function() {
 
 ####  Usuários (2)
 
-:shipit:
+- *Descrição:* Página aonde é possível visualizar os usuários do banco de dados da tabela `dba_roles`. Usuário com permissão tem acesso a alteração de dados.
+  
+- *Botões (Restrito):* CRIAR, BLOQUEAR, EXCLUIR. 
+  - *CRIAR*: Abre a página **Criar usuário (4)**.
+  - *BLOQUEAR / Desbloquear*: Abre a página **Bloquear usuário (5)**.
+  - *EXCLUIR*: Abre a página **Excluir usuário (6)**.
+- *Origem dos dados*: 
+
+```sql
+/*
+  Para conseguir os dados de usuários foi feita a seguinte consulta SQL em
+  Região > Origem > Consulta SQL, a partir da região Administração de usuários.
+*/
+SELECT *
+FROM dba_users
+ORDER BY username ASC;
+```
+
+<hr>
+
+#### Roles atribuídas (3)
+
+- *Descrição:* Página aonde é possível visualizar as roles e a quais roles essas estão atribuidas no banco de dados, por meio da view `VW_GIS_ROLES_ATRIBUIDAS`. Usuário com permissão tem acesso a alteração de dados.
+  
+- *Botões (Restrito):* CRIAR, BLOQUEAR, EXCLUIR. 
+  - *CRIAR*: Abre a página **Criar role (8)**.
+  - *ATRIBUIR_REVOGAR*: Abre a página **Atribuir / Revogar role (10)**.
+  - *EXCLUIR*: Abre a página **Excluir role (9)**.
+- *Origem dos dados*: View `VW_GIS_ROLES_ATRIBUIDAS`, passado por parâmetro no campo Nome da Tabela, em Região > Origem >.  
