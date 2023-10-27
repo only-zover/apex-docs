@@ -25,10 +25,10 @@ O aplicativo foi desenvolvido usando Oracle APEX na versão 23.1.4 e tem como ob
 
 - *Descrição:* Página para autenticação de usuários.
   
-- *Campos:* P9999_USERNAME, P9999_PASSWORD
+- *Campos:*
   - *USERNAME:* Nome de usuário do banco de dados.
   - *PASSWORD:* A senha estabelecida pelo usuário ou enviada por e-mail na criação do mesmo.
-- *Botões:* LOGIN
+- *Botões:*
   - *LOGIN:* Efetua os processos padrão de login do Oracle APEX.
 - *Código implementado:*
 
@@ -58,11 +58,11 @@ apex.jQuery(apex.gPageContext$).on("apexpagesubmit", function() {
 
 - *Descrição:* Página aonde é possível visualizar os usuários do banco de dados da tabela `dba_roles`. Usuário com permissão tem acesso a alteração de dados.
   
-- *Botões (Restrito):* CRIAR, BLOQUEAR, EXCLUIR. 
-  - *CRIAR*: Abre a página **Criar usuário (4)**.
-  - *BLOQUEAR / Desbloquear*: Abre a página **Bloquear usuário (5)**.
-  - *EXCLUIR*: Abre a página **Excluir usuário (6)**.
-- *Origem dos dados*: 
+- *Botões (Restrito):* 
+  - *CRIAR:* Abre a página **Criar usuário (4)**.
+  - *BLOQUEAR / Desbloquear:* Abre a página **Bloquear usuário (5)**.
+  - *EXCLUIR:* Abre a página **Excluir usuário (6)**.
+- *Origem dos dados:* 
 
 ```sql
 /*
@@ -85,3 +85,14 @@ ORDER BY username ASC;
   - *ATRIBUIR_REVOGAR*: Abre a página **Atribuir / Revogar role (10)**.
   - *EXCLUIR*: Abre a página **Excluir role (9)**.
 - *Origem dos dados*: View `VW_GIS_ROLES_ATRIBUIDAS`, passado por parâmetro no campo Nome da Tabela, em Região > Origem >.  
+
+<hr>
+
+#### Criar usuário (4)
+
+- *Descrição:* Nessa página é possível criar novos usuários passando por parâmetro o nome e e-mail.
+  
+- *Botões (Restrito):* 
+  - *CRIAR:* Executa a Ação Dinâmica _Gerar senha_ e a Cadeia de Execução _Criação do usuário_.
+  - *CANCELAR:* Fecha a caixa de diálogo.
+- *Origem dos dados:* View `VW_GIS_ROLES_ATRIBUIDAS`, passado por parâmetro no campo Nome da Tabela, em Região > Origem >.  
