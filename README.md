@@ -14,6 +14,7 @@
    * [Criar usuário](#criar-usuário-4)
    * [Bloquear usuário](#bloquear-usuário-5)
    * [Excluir usuário](#excluir-usuário-6)
+   * [Alterar senha](#alterar-senha-7)
 
 <hr>
 
@@ -204,6 +205,7 @@ O aplicativo foi desenvolvido usando Oracle APEX na versão 23.1.4 e tem como ob
 
 <br>
 
+
 ### Excluir usuário (6)
 
 - *Item P6_USUARIO (Lista de seleção):* Este item é uma cópia do Item P5_USUARIO.
@@ -211,4 +213,24 @@ O aplicativo foi desenvolvido usando Oracle APEX na versão 23.1.4 e tem como ob
 - *Processo Deletar usuário (Executar Código):* Executa a função para excluir um usuário do banco de dados.
   ```sql
   pk_gis.excluir_usuario(:P6_USUARIO);
+  ```
+
+<br>
+<hr>
+
+### Alterar senha (7)
+
+- *Processo Atualizar senha (Executar Código):* Executa a função para alterar a senha de um usuário no banco de dados.
+  ```sql
+  pk_gis.alterar_senha(APEX_CUSTOM_AUTH.GET_USERNAME, :P7_CONFIRMAR_SENHA);
+  ```
+
+- *Processo Encerrar sessão (Executar Código):* Encerra a sessão do usuário atual.
+  ```sql
+  apex_authentication.logout(:SESSION, :APP_ID);
+  ```
+
+- *Validação Senha igual:* Verifica se a senha dos campos P7_SENHA e P7_CONFIRMAR_SENHA são iguais.
+  ```sql
+  :P7_SENHA = :P7_CONFIRMAR_SENHA OR :P7_CONFIRMAR_SENHA IS NULL
   ```
