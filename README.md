@@ -12,7 +12,8 @@
    * [Usuários](#usuários-2)
    * [Roles atribuídas](#roles-atribuídas-3)
    * [Criar usuário](#criar-usuário-4)
-   * [Bloquear usuário](#bloquear-usuário)
+   * [Bloquear usuário](#bloquear-usuário-5)
+   * [Excluir usuário](#excluir-usuário-6)
 
 <hr>
 
@@ -45,16 +46,16 @@ O aplicativo foi desenvolvido usando Oracle APEX na versão 23.1.4 e tem como ob
   - *LOGIN:* Efetua os processos padrão de login do Oracle APEX.
 - *Código implementado:*
 
-```javascript
-/*
-  Esse código é responsável por substituir
-  o caractere "." (ponto final) do campo USERNAME.
-*/
-apex.jQuery(apex.gPageContext$).on("apexpagesubmit", function() {
-  const item = apex.item("P9999_USERNAME");
-  item.setValue(item.getValue().replace('.', ''));
-});
-```   
+  ```javascript
+  /*
+    Esse código é responsável por substituir
+    o caractere "." (ponto final) do campo USERNAME.
+  */
+  apex.jQuery(apex.gPageContext$).on("apexpagesubmit", function() {
+    const item = apex.item("P9999_USERNAME");
+    item.setValue(item.getValue().replace('.', ''));
+  });
+  ```   
 
 <hr>
 
@@ -77,15 +78,15 @@ apex.jQuery(apex.gPageContext$).on("apexpagesubmit", function() {
   - *EXCLUIR:* Abre a página **Excluir usuário (6)**.
 - *Origem dos dados:* 
 
-```sql
-/*
-  Para conseguir os dados de usuários foi feita a seguinte consulta SQL em
-  Região > Origem > Consulta SQL, a partir da região Administração de usuários.
-*/
-SELECT *
-FROM dba_users
-ORDER BY username ASC;
-```
+  ```sql
+  /*
+    Para conseguir os dados de usuários foi feita a seguinte consulta SQL em
+    Região > Origem > Consulta SQL, a partir da região Administração de usuários.
+  */
+  SELECT *
+  FROM dba_users
+  ORDER BY username ASC;
+  ```
 
 <hr>
 
@@ -110,78 +111,78 @@ ORDER BY username ASC;
   - *CANCELAR:* Fecha a caixa de diálogo.
 - *Implementações:*
   - *Escrever e-mail no input (Definir valor):* Responsável por escrever automáticamente o nome de usuário e o dominio no campo de e-mail.
-  ```javascript
-  apex.item('P4_USUARIO').getValue() + '@londrina.pr.gov.br'
-  ```
+    ```javascript
+    apex.item('P4_USUARIO').getValue() + '@londrina.pr.gov.br'
+    ```
   - *Gerar senha (Definir valor):* é responsável por gerar um senha aleatória de 10 caracteres, possuindo letras e números.
-  ```javascript
-  Math.random().toString(36).slice(-10);
-  ```
+    ```javascript
+    Math.random().toString(36).slice(-10);
+    ```
   - *Se usuário existe (Validação):* Verifica se o usuário já existe no banco de dados.
-  ```sql
-  SELECT null
-  FROM dba_users
-  WHERE username = UPPER(:P4_USUARIO);
-  ```
+    ```sql
+    SELECT null
+    FROM dba_users
+    WHERE username = UPPER(:P4_USUARIO);
+    ```
   - *Criar usuário (Processo Executar Código):* Executa a função de criar usuário no banco de dados. Faz parte da cadeia de execução Criação do usuário.
-  ```sql
-  pk_gis.criar_usuario(:P4_USUARIO, :P4_SENHA);
-  ```
+    ```sql
+    pk_gis.criar_usuario(:P4_USUARIO, :P4_SENHA);
+    ```
   - *Enviar e-mail (Processo Enviar E-mail):* Envia um e-mail utilizando parametros específicos.
   ![image](https://github.com/only-zover/apex-docs/assets/78991372/d9705103-cd27-476e-a9c9-eb555f502abc)
   ![image](https://github.com/only-zover/apex-docs/assets/78991372/8095119b-6f13-4732-a61e-0feb2aaf0af0)
   - Em Componentes Compartilhados > Modelos de E-mail > Email novo usuario:
   ![image](https://github.com/only-zover/apex-docs/assets/78991372/745ba4ec-66b4-4338-96f4-eb37a75ccc6c)
-  ```html
-  <!--Esse código vai em: Cabeçalho-->
-  <b style="font-size: 24px;">Alteração de senha</b>
-  <!--Corpo do Texto-->
-  <div>
-  <h1>Seu usuário foi criado.</h1>
-  <p>
-    <b>Nome de usuário:</b> #USUARIO#
+    ```html
+    <!--Esse código vai em: Cabeçalho-->
+    <b style="font-size: 24px;">Alteração de senha</b>
+    <!--Corpo do Texto-->
+    <div>
+    <h1>Seu usuário foi criado.</h1>
+    <p>
+      <b>Nome de usuário:</b> #USUARIO#
+      <br>
+      <b>Senha:</b> #SENHA#
+    </p>
+    <h2>Clique no botão abaixo para alterar sua senha padrão.</h2>
     <br>
-    <b>Senha:</b> #SENHA#
-  </p>
-  <h2>Clique no botão abaixo para alterar sua senha padrão.</h2>
-  <br>
-  <a href="https://appdev.londrina.pr.gov.br/app/r/siglon/alterar-senha/"><button>Alterar senha</button></a>
-  </div>
-  <style>
-    button {
-        margin-top: 0.5rem;
-        padding: 0.6rem;
-        width: 21rem;
-        font-weight: bold;
-    }
-
-    div {
-        text-align: center;
-    }
-
-    a button {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #3498db;
-        color: #fff;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-decoration: none; /* Remova o sublinhado do link */
-        transition: background-color 0.3s;
-    }
-
-    /* Altere a cor de fundo ao passar o mouse */
-    a button:hover {
-        background-color: #2980b9;
-    }
-  </style>
-  ```
+    <a href="https://appdev.londrina.pr.gov.br/app/r/siglon/alterar-senha/"><button>Alterar senha</button></a>
+    </div>
+    <style>
+      button {
+          margin-top: 0.5rem;
+          padding: 0.6rem;
+          width: 21rem;
+          font-weight: bold;
+      }
+  
+      div {
+          text-align: center;
+      }
+  
+      a button {
+          display: inline-block;
+          padding: 10px 20px;
+          background-color: #3498db;
+          color: #fff;
+          font-size: 16px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          text-decoration: none; /* Remova o sublinhado do link */
+          transition: background-color 0.3s;
+      }
+  
+      /* Altere a cor de fundo ao passar o mouse */
+      a button:hover {
+          background-color: #2980b9;
+      }
+    </style>
+    ```
 
   <br>
 
-### Bloquear usuário
+### Bloquear usuário (5)
 
 - *Item P5_USUARIO (Lista de seleção):* Seleciona o usuário para ser bloqueado baseado em uma consulta SQL.
   ```SQL
@@ -192,11 +193,22 @@ ORDER BY username ASC;
   ```
 
 - *Bloquear usuário (Processo Executar código):* Executa o função para bloquear usuário.
-```sql
-pk_gis.bloquear_usuario(:P5_USUARIO);
-```
+  ```sql
+  pk_gis.bloquear_usuario(:P5_USUARIO);
+  ```
 
 - *Desbloquear usuário (Processo Executar código): Executa o função para desbloquear usuário.*
-```sql
-pk_gis.desbloquear_usuario(:P5_USUARIO);
-```
+  ```sql
+  pk_gis.desbloquear_usuario(:P5_USUARIO);
+  ```
+
+<br>
+
+### Excluir usuário (6)
+
+- *Item P6_USUARIO (Lista de seleção):* Este item é uma cópia do Item P5_USUARIO.
+
+- *Processo Deletar usuário (Executar Código):* Executa a função para excluir um usuário do banco de dados.
+  ```sql
+  pk_gis.excluir_usuario(:P6_USUARIO);
+  ```
