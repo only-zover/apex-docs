@@ -15,6 +15,7 @@
    * [Bloquear usuário](#bloquear-usuário-5)
    * [Excluir usuário](#excluir-usuário-6)
    * [Alterar senha](#alterar-senha-7)
+   * [Criar role](#criar-role-8)
 
 <hr>
 
@@ -220,17 +221,39 @@ O aplicativo foi desenvolvido usando Oracle APEX na versão 23.1.4 e tem como ob
 
 ### Alterar senha (7)
 
-- *Processo Atualizar senha (Executar Código):* Executa a função para alterar a senha de um usuário no banco de dados.
+- *Processo `Atualizar senha` (Executar Código):* Executa a função para alterar a senha de um usuário no banco de dados.
   ```sql
   pk_gis.alterar_senha(APEX_CUSTOM_AUTH.GET_USERNAME, :P7_CONFIRMAR_SENHA);
   ```
 
-- *Processo Encerrar sessão (Executar Código):* Encerra a sessão do usuário atual.
+- *Processo `Encerrar sessão` (Executar Código):* Encerra a sessão do usuário atual.
   ```sql
   apex_authentication.logout(:SESSION, :APP_ID);
   ```
 
-- *Validação Senha igual:* Verifica se a senha dos campos P7_SENHA e P7_CONFIRMAR_SENHA são iguais.
+- *Validação `Senha igual`:* Verifica se a senha dos campos P7_SENHA e P7_CONFIRMAR_SENHA são iguais.
   ```sql
-  :P7_SENHA = :P7_CONFIRMAR_SENHA OR :P7_CONFIRMAR_SENHA IS NULL
+  :P7_SENHA = :P7_CONFIRMAR_SENHA OR :P7_CONFIRMAR_SENHA IS NULL;
+  ```
+
+<br>
+<hr>
+
+### Criar role (8)
+
+- *Ação Dinâmica `Retirar espaço em branco` (Executar Código JavaScript):* Executa um código JavaScript para retirar os espaços em brancos, evitando erros no banco de dados.
+  ```javascript
+  apex.item('P8_ROLE').setValue(apex.item('P8_ROLE').getValue().replace(' ', ''));
+  ```
+
+- *Validação `Role existe`:* Verifica se a role digitada já existe no banco de dados.
+  ```sql
+  SELECT null
+  FROM dba_roles
+  WHERE role = 'RL_GIS_' || UPPER(:P8_ROLE);
+  ```
+
+- *Processo `Criar role` (Executar Código):* Executa a função de criar role no banco de dados.
+  ```sql
+  pk_gis.criar_role(:P8_ROLE);
   ```
