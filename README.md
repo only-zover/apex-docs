@@ -18,6 +18,7 @@
    * [Criar role](#criar-role-8)
    * [Excluir role](#excluir-role-9)
    * [Atribuir / Revogar role](#atribuir--revogar-role-10)
+   * [Role para role](#role-para-role-11)
 
 <hr>
 
@@ -294,4 +295,21 @@ O aplicativo foi desenvolvido usando Oracle APEX na versão 23.1.4 e tem como ob
 - *Processo `Revogar role` (Executar Código):* Executa a função para revogar um direito a um usuário no banco de dados. "RL_GIS_" é removido do nome da role ao ser passado como parâmetro.
   ```sql
   pk_gis.revogar_direito(:P10_USUARIO, REPLACE(:P10_ROLE, 'RL_GIS_', ''));
+  ```
+
+<br>
+<hr>
+
+### Role para role (11)
+
+- *Item `P11_ROLE_BASE` (Lista de Seleção):* A role que receberá um direito. Baseada na seguinte consulta SQL.
+  ```sql
+  SELECT role as d, role as u
+  FROM vw_gis_roles
+  ORDER BY 1;
+  ```
+
+- *Processo `Atribuir role para role` (Executar Código):* Executa a função parar atribuir um direito a uma role. Substitui "RL_GIS_" dos nomes das roles.
+  ```sql
+  pk_gis.atribuir_role_role(REPLACE(:P11_ROLE_ORIGEM, 'RL_GIS_', ''), REPLACE(:P11_ROLE_DESTINO, 'RL_GIS_', ''));
   ```
