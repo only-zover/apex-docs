@@ -16,6 +16,7 @@
    * [Excluir usuário](#excluir-usuário-6)
    * [Alterar senha](#alterar-senha-7)
    * [Criar role](#criar-role-8)
+   * [Excluir role](#excluir-role-9)
 
 <hr>
 
@@ -95,7 +96,7 @@ O aplicativo foi desenvolvido usando Oracle APEX na versão 23.1.4 e tem como ob
 ### Roles atribuídas (3)
 
 - *Descrição:* Página aonde é possível visualizar as roles e a quais roles essas estão atribuidas no banco de dados, por meio da view `VW_GIS_ROLES_ATRIBUIDAS`. Usuário com permissão tem acesso a alteração de dados.
-  
+
 - *Botões (Restrito):* CRIAR, BLOQUEAR, EXCLUIR. 
   - *CRIAR*: Abre a página **Criar role (8)**.
   - *ATRIBUIR_REVOGAR*: Abre a página **Atribuir / Revogar role (10)**.
@@ -257,3 +258,21 @@ O aplicativo foi desenvolvido usando Oracle APEX na versão 23.1.4 e tem como ob
   ```sql
   pk_gis.criar_role(:P8_ROLE);
   ```
+
+<br>
+<hr>
+
+### Excluir role (9)
+
+- *Item `P9_ROLE` (Lista de seleção):* Seleciona a role para ser excluida baseada em uma consulta SQL.
+  ```sql
+  SELECT role as d, role as u
+  FROM vw_gis_roles
+  ORDER BY 1;
+  ```
+
+- *Ação Dinâmica `Excluir role` (Executar código):* Executa a função para excluir uma role no banco de dados. Para passar como parâmetro é removido "RL_GIS_" do nome da role.
+  ```sql
+  pk_gis.excluir_role(REPLACE(:P9_ROLE, 'RL_GIS_', ''));
+  ```
+  
