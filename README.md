@@ -17,6 +17,7 @@
    * [Alterar senha](#alterar-senha-7)
    * [Criar role](#criar-role-8)
    * [Excluir role](#excluir-role-9)
+   * [Atribuir / Revogar role](#atribuir--revogar-role-10)
 
 <hr>
 
@@ -264,15 +265,33 @@ O aplicativo foi desenvolvido usando Oracle APEX na versão 23.1.4 e tem como ob
 
 ### Excluir role (9)
 
-- *Item `P9_ROLE` (Lista de seleção):* Seleciona a role para ser excluida baseada em uma consulta SQL.
+- *Item `P9_ROLE` (Lista de Seleção):* Seleciona a role para ser excluida baseada em uma consulta SQL.
   ```sql
   SELECT role as d, role as u
   FROM vw_gis_roles
   ORDER BY 1;
   ```
 
-- *Ação Dinâmica `Excluir role` (Executar código):* Executa a função para excluir uma role no banco de dados. Para passar como parâmetro é removido "RL_GIS_" do nome da role.
+- *Ação Dinâmica `Excluir role` (Executar Código):* Executa a função para excluir uma role no banco de dados. Para passar como parâmetro é removido "RL_GIS_" do nome da role.
   ```sql
   pk_gis.excluir_role(REPLACE(:P9_ROLE, 'RL_GIS_', ''));
   ```
   
+<br>
+<hr>
+
+### Atribuir / Revogar role (10)
+
+- *Item `P10_ROLE` (Lista de Seleção):* Esse item é uma cópia do item `P9_ROLE` em Excluir role (9).
+
+- *Item `P10_USUARIO` (Lista de Seleção):* Esse item é uma cópia do item `P5_USUARIO` em Bloquear usuário (5).
+
+- *Processo `Atribuir role` (Executar Código):* Executa a função para atribuir um direito a um usuário no banco de dados. "RL_GIS_" é removido do nome da role ao ser passado como parâmetro.
+  ```sql
+  pk_gis.atribuir_direito(:P10_USUARIO, REPLACE(:P10_ROLE, 'RL_GIS_', ''));
+  ```
+
+- *Processo `Revogar role` (Executar Código):* Executa a função para revogar um direito a um usuário no banco de dados. "RL_GIS_" é removido do nome da role ao ser passado como parâmetro.
+  ```sql
+  pk_gis.revogar_direito(:P10_USUARIO, REPLACE(:P10_ROLE, 'RL_GIS_', ''));
+  ```
